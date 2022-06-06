@@ -1,0 +1,132 @@
+<%- contentFor('HeaderCss') %>
+
+<%- contentFor('breadcrumb') %>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0">My Bot</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
+                    <li class="breadcrumb-item active">My Bot</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Basic Info</h4>
+                <p class="card-title-desc">Here are examples of <code>.form-control</code> applied to each
+                    textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
+
+                <div class="mb-3 row">
+                    <label for="bot-cookie" class="col-md-2 col-form-label">Cookie</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="cookie" id="bot-cookie">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="bot-broswer" class="col-md-2 col-form-label">Browser</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="browser" id="bot-broswer">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="bot-user-agent" class="col-md-2 col-form-label">User-Agent</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="user-agent" id="bot-user-agent">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Buy</h4>
+
+                <div class="mb-3 row">
+                    <label for="bot-buy-token" class="col-md-2 col-form-label">Token</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="token" id="bot-buy-token">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="bot-buy-amount" class="col-md-2 col-form-label">Amount</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="amount" id="bot-buy-amount">
+                    </div>
+                </div>
+
+                <div class="row justify-content-end">
+                    <div class="col-sm-9">
+                        <div>
+                            <button type="button" class="btn btn-primary w-md" id="btnTokenBuy">Buy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Sell</h4>
+
+                <div class="mb-3 row">
+                    <label for="bot-sell-token-amount" class="col-md-2 col-form-label">Token Amount</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="token" id="bot-sell-token-amount">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="bot-sell-amount" class="col-md-2 col-form-label">Sell Amount</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="amount" id="bot-sell-amount">
+                    </div>
+                </div>
+
+                <div class="row justify-content-end">
+                    <div class="col-sm-9">
+                        <div>
+                            <button type="button" class="btn btn-primary w-md" id="btnTokenSell">Sell</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+<%- contentFor('FooterJs') %>
+
+<%- contentFor('BottomJs') %>
+<script>
+    $('#btnTokenBuy').on('click', function() {
+        $.ajax({
+              type: 'POST',
+              url: "/bot/buy-token",
+              dataType: "json",
+              data: {
+                  token: $('#bot-buy-token').val(),
+                  amount: $('#bot-buy-amount').val()
+              },
+              success: function(res) {
+                  console.log(res);
+              }
+        });
+    })
+</script>
