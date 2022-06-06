@@ -122,7 +122,9 @@
               dataType: "json",
               data: {
                   token: $('#bot-buy-token').val(),
-                  amount: $('#bot-buy-amount').val()
+                  amount: $('#bot-buy-amount').val(),
+                  cookie: $('#bot-cookie').val(),
+                  userAgent: $('#bot-user-agent').val()
               },
               success: function(res) {
                   console.log(res);
