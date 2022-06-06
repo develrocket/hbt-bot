@@ -1,0 +1,165 @@
+<%- contentFor('HeaderCss') %>
+
+<%- contentFor('breadcrumb') %>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0">Buy Token Helper</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
+                    <li class="breadcrumb-item active">Buy Token Helper</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Buy</h4>
+
+                <div class="mb-3 row">
+                    <label for="bot-buy-token" class="col-md-2 col-form-label">Token</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="token" id="bot-buy-token">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="bot-buy-amount" class="col-md-2 col-form-label">Amount</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="" name="amount" id="bot-buy-amount">
+                    </div>
+                </div>
+
+                <div class="row justify-content-end">
+                    <div class="col-sm-9">
+                        <div>
+                            <button type="button" class="btn btn-primary w-md" id="btnTokenBuy">Buy</button>
+                            <button type="button" class="btn btn-success w-md" id="btnTokenSell">Sell</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Bet Option</h4>
+
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td id="buyPrice"></td>
+                                <td id="buyCount"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Order Book</h4>
+
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+<%- contentFor('FooterJs') %>
+
+<%- contentFor('BottomJs') %>
+<script>
+    $('#btnTokenBuy').on('click', function() {
+        $.ajax({
+              type: 'POST',
+              url: "/bot/buy-helper",
+              dataType: "json",
+              data: {
+                  token: $('#bot-buy-token').val(),
+                  amount: $('#bot-buy-amount').val()
+              },
+              success: function(res) {
+                  console.log(res);
+                  if (res.result == 'success') {
+                      $('#buyPrice').html(res.buyPrice);
+                      $('#buyCount').html(res.buyCount);
+
+                      let tableContent = "";
+                      for (let i = 0; i < res.orders.length && i < 100; i ++) {
+                          let item = res.orders[i];
+                          tableContent += '<tr><td>' + (i + 1) + '</td>';
+                          tableContent += '<td>' + item.price + '</td>';
+                          tableContent += '<td>' + item.left + '</td></tr>';
+                      }
+
+                      $('#orderTable').html(tableContent);
+                  }
+              }
+        });
+    })
+
+    $('#btnTokenSell').on('click', function() {
+        $.ajax({
+              type: 'POST',
+              url: "/bot/sell-helper",
+              dataType: "json",
+              data: {
+                  token: $('#bot-buy-token').val(),
+                  amount: $('#bot-buy-amount').val()
+              },
+              success: function(res) {
+                  console.log(res);
+                  if (res.result == 'success') {
+                      $('#buyPrice').html(res.sellPrice);
+                      $('#buyCount').html(res.sellCount);
+
+                      let tableContent = "";
+                      for (let i = 0; i < res.orders.length && i < 100; i ++) {
+                          let item = res.orders[i];
+                          tableContent += '<tr><td>' + (i + 1) + '</td>';
+                          tableContent += '<td>' + item.price + '</td>';
+                          tableContent += '<td>' + item.left + '</td></tr>';
+                      }
+
+                      $('#orderTable').html(tableContent);
+                  }
+              }
+        });
+    })
+</script>

@@ -392,4 +392,11 @@ module.exports = function (app) {
 
       app.post('/bot/buy-token', urlencodeParser, isUserAllowed, BotCtrl.buyToken);
 
+      app.get('/form-bot-buy', isUserAllowed, function (req, res) {
+            res.locals = { title: 'Buy Token Helper' };
+            res.render('Form/form-bot-buy');
+      });
+
+      app.post('/bot/buy-helper', urlencodeParser, isUserAllowed, BotCtrl.buyHelper);
+      app.post('/bot/sell-helper', urlencodeParser, isUserAllowed, BotCtrl.sellHelper);
 }
