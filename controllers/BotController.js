@@ -105,6 +105,10 @@ module.exports = function () {
 		            method: 'POST',
 		            url: 'https://www.hotbit.io/v1/order/create?platform=web',
 		            headers: {
+										':authority': 'www.hotbit.io',
+										':method': 'POST',
+										':path': '/v1/order/create?platform=web',
+										':scheme': 'https',
 		                'Content-Type': 'application/x-www-form-urlencoded',
 										'Cookie': cookie,
 										'User-Agent': userAgent,
@@ -127,20 +131,6 @@ module.exports = function () {
 										use_discount: false
 							  }
 		        };
-
-						console.log({
-								'Content-Type': 'application/x-www-form-urlencoded',
-								'Cookie': cookie,
-								'User-Agent': userAgent,
-								origin: 'https://www.hotbit.io',
-								referer: 'https://www.hotbit.io/exchange?symbol=RSR_USDT',
-								'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
-								'sec-ch-ua-mobile': '?0',
-								'sec-ch-ua-platform': "Windows",
-								'sec-fetch-dest': 'empty',
-								'sec-fetch-mode': 'cors',
-								'sec-fetch-site': 'same-origin'
-						});
 
 						let buyResult = await axios(config);
 						buyResult = buyResult.data;
