@@ -356,6 +356,7 @@ module.exports = function () {
 								if (item.left * 1 >= amount) {
 										buyCount = amount;
 										buyPrice = item.price;
+										break;
 								}
 						}
 
