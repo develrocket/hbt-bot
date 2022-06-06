@@ -137,7 +137,7 @@ module.exports = function () {
 
 						// console.log(buyResult);
 
-						const { data } = await curly.post('http://httpbin.com/post', {
+						const { data } = await curly.post('https://www.hotbit.io/v1/order/create?platform=web', {
 							  postFields: JSON.stringify({
 										    	price: buyPrice,
 										    	quantity: buyCount,
