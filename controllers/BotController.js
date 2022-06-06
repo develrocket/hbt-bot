@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var urlencodeParser = bodyParser.urlencoded({ extended: false });
 var validator = require('express-validator');
-
+const { curly } = require('node-libcurl');
 var axios = require("axios");
 
 module.exports = function () {
@@ -101,41 +101,77 @@ module.exports = function () {
 						}
 
 						//Buy Token
-						config = {
-		            method: 'POST',
-		            url: 'https://www.hotbit.io/v1/order/create?platform=web',
-		            headers: {
-										':authority': 'www.hotbit.io',
-										':method': 'POST',
-										':path': '/v1/order/create?platform=web',
-										':scheme': 'https',
-		                'Content-Type': 'application/x-www-form-urlencoded',
-										'Cookie': cookie,
-										'User-Agent': userAgent,
-										origin: 'https://www.hotbit.io',
-										referer: 'https://www.hotbit.io/exchange?symbol=RSR_USDT',
-										'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
-										'sec-ch-ua-mobile': '?0',
-										'sec-ch-ua-platform': "Windows",
-										'sec-fetch-dest': 'empty',
-										'sec-fetch-mode': 'cors',
-										'sec-fetch-site': 'same-origin'
-		            },
-								data: {
-							    	price: buyPrice,
-							    	quantity: buyCount,
-										market: token + '/USDT',
-										side: 'BUY',
-										type: 'LIMIT',
-										hide: false,
-										use_discount: false
-							  }
-		        };
+						// config = {
+		        //     method: 'POST',
+		        //     url: 'https://www.hotbit.io/v1/order/create?platform=web',
+		        //     headers: {
+						// 				':authority': 'www.hotbit.io',
+						// 				':method': 'POST',
+						// 				':path': '/v1/order/create?platform=web',
+						// 				':scheme': 'https',
+		        //         'Content-Type': 'application/x-www-form-urlencoded',
+						// 				'Cookie': cookie,
+						// 				'User-Agent': userAgent,
+						// 				origin: 'https://www.hotbit.io',
+						// 				referer: 'https://www.hotbit.io/exchange?symbol=RSR_USDT',
+						// 				'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+						// 				'sec-ch-ua-mobile': '?0',
+						// 				'sec-ch-ua-platform': "Windows",
+						// 				'sec-fetch-dest': 'empty',
+						// 				'sec-fetch-mode': 'cors',
+						// 				'sec-fetch-site': 'same-origin'
+		        //     },
+						// 		data: {
+						// 	    	price: buyPrice,
+						// 	    	quantity: buyCount,
+						// 				market: token + '/USDT',
+						// 				side: 'BUY',
+						// 				type: 'LIMIT',
+						// 				hide: false,
+						// 				use_discount: false
+						// 	  }
+		        // };
+						//
+						// let buyResult = await axios(config);
+						// buyResult = buyResult.data;
 
-						let buyResult = await axios(config);
-						buyResult = buyResult.data;
+						// console.log(buyResult);
 
-						console.log(buyResult);
+						const { data } = await curly.post('http://httpbin.com/post', {
+							  postFields: JSON.stringify({
+										    	price: buyPrice,
+										    	quantity: buyCount,
+													market: token + '/USDT',
+													side: 'BUY',
+													type: 'LIMIT',
+													hide: false,
+													use_discount: false
+										  }),
+							  httpHeader: [
+									':authority: www.hotbit.io',
+									':method: POST',
+									':path: /v1/order/create?platform=web',
+									':scheme: https',
+					        'Content-Type: application/x-www-form-urlencoded',
+									'Cookie: '+ cookie,
+									'User-Agent: ' + userAgent,
+									'origin: https://www.hotbit.io',
+									'referer: https://www.hotbit.io/exchange?symbol=RSR_USDT',
+									'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+									'sec-ch-ua-mobile: ?0',
+									'sec-ch-ua-platform: Windows',
+									'sec-fetch-dest: empty',
+									'sec-fetch-mode: cors',
+									'sec-fetch-site: same-origin'
+							  ],
+						})
+
+						console.log(data);
+
+						return res.json({
+								result: 'failed',
+								amount: 0
+						});
 
 						if (buyResult.code * 1 != 1100) {
 								console.log('buy-result-error');
