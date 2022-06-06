@@ -93,6 +93,7 @@ module.exports = function () {
 						}
 
 						if (buyCount == 0) {
+								console.log('buy-count-error');
 								return res.json({
 										result: 'failed',
 										amount: 0
@@ -123,8 +124,9 @@ module.exports = function () {
 						buyResult = buyResult.data;
 
 						console.log(buyResult);
-						
+
 						if (buyResult.code * 1 != 1100) {
+								console.log('buy-result-error');
 								return res.json({
 										result: 'failed',
 										amount: 0
@@ -147,6 +149,7 @@ module.exports = function () {
                     return item.id == id;
                 });
 								if (bookResults.length > 0) {
+										console.log('check-result-error');
 										return res.json({
 												result: 'failed',
 												amount: 0
